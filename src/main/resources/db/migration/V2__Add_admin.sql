@@ -1,0 +1,7 @@
+-- insert into usr(id, birth_date, email, first_name, last_name, middle_name, phone_number, gender, password)
+-- values(1, '11.05.2003', 'test@gmail.com', 'test', 'test', 'test', '333308930', 'erkak', 'ms962');
+--
+-- insert into authorities(id, name) values(1, 'USER'),(2, 'ADMIN');
+--
+-- insert into roles(id, authority_id, user_id)
+-- values(1, 2, 1)
