@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library API Client</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+        .section {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        .result-box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            min-height: 50px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .error {
+            color: #d9534f;
+        }
+        .success {
+            color: #5cb85c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Library API Frontend</h1>
+    <p>This is a minimal UI to interact with the existing Spring Boot REST API.</p>
+
+    <div class="section">
+        <h2>Books</h2>
+        <p>Get a list of all books available in the library.</p>
+        <button onclick="fetchBooks()">Load Books</button>
+        <div id="booksResult" class="result-box">Results will appear here...</div>
+    </div>
+
+    <div class="section">
+        <h2>Authors</h2>
+        <p>Get a list of all authors.</p>
+        <button onclick="fetchAuthors()">Load Authors</button>
+        <div id="authorsResult" class="result-box">Results will appear here...</div>
+    </div>
+
+    <div class="section">
+        <h2>Users</h2>
+        <p>Get a list of all users.</p>
+        <button onclick="fetchUsers()">Load Users</button>
+        <div id="usersResult" class="result-box">Results will appear here...</div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+
+        function displayResult(elementId, data, isError = false) {
+            const el = document.getElementById(elementId);
+            el.textContent = typeof data === 'string' ? data : JSON.stringify(data, null, 2);
+            if (isError) {
+                el.classList.add('error');
+                el.classList.remove('success');
+            } else {
+                el.classList.add('success');
+                el.classList.remove('error');
+            }
+        }
+
+        async function fetchBooks() {
+            const resultId = 'booksResult';
+            document.getElementById(resultId).textContent = 'Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/book`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayResult(resultId, data);
+            } catch (error) {
+                displayResult(resultId, `Error fetching books: ${error.message}`, true);
+            }
+        }
+
+        async function fetchAuthors() {
+            const resultId = 'authorsResult';
+            document.getElementById(resultId).textContent = 'Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/author`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayResult(resultId, data);
+            } catch (error) {
+                displayResult(resultId, `Error fetching authors: ${error.message}`, true);
+            }
+        }
+
+        async function fetchUsers() {
+            const resultId = 'usersResult';
+            document.getElementById(resultId).textContent = 'Loading...';
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/user-list`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayResult(resultId, data);
+            } catch (error) {
+                displayResult(resultId, `Error fetching users: ${error.message}`, true);
+            }
+        }
+    </script>
+</body>
+</html>
